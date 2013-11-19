@@ -7,10 +7,10 @@ Gem::Specification.new do |spec|
   spec.name          = "metrics"
   spec.version       = Metrics::VERSION
   spec.authors       = ["coding-chimp"]
-  spec.email         = ["xarfai27@gmail.com"]
-  spec.description   = %q{TODO: Write a gem description}
-  spec.summary       = %q{TODO: Write a gem summary}
-  spec.homepage      = ""
+  spec.email         = ["babartmann@gmail.com"]
+  spec.description   = %q{Rails Metrics}
+  spec.summary       = %q{Rails Metrics}
+  spec.homepage      = "http://code-chimp.org"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)
@@ -20,4 +20,9 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency "bundler", "~> 1.3"
   spec.add_development_dependency "rake"
+
+  spec.add_runtime_dependency 'code_metrics', ['~> 0.1']
+  spec.add_runtime_dependency 'churn',        ['~> 0.0']
+  spec.add_runtime_dependency 'flog',         ['~> 4.2']
+  spec.add_runtime_dependency 'hirb',         ['~> 0.7']
 end

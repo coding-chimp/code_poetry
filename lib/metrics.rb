@@ -1,5 +1,9 @@
 require "metrics/version"
 
 module Metrics
-  # Your code goes here...
+  if defined?(Rails)
+    require 'metrics/railtie'
+  else
+    load "tasks/metrics.rake"
+  end
 end
