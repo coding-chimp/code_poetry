@@ -1,11 +1,11 @@
 require 'rails'
 
-module Metrics
+module CodePoetry
   class Railtie < Rails::Railtie
-    railtie_name :metrics
+    railtie_name :code_poetry
 
     rake_tasks do
-      load "tasks/metrics.rake"
+      load "tasks/code_poetry.rake"
     end
   end
 end

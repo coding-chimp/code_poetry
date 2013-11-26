@@ -1,11 +1,11 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'metrics/version'
+require 'code_poetry/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "metrics"
-  spec.version       = Metrics::VERSION
+  spec.name          = "code_poetry"
+  spec.version       = CodePoetry::VERSION
   spec.authors       = ["coding-chimp"]
   spec.email         = ["babartmann@gmail.com"]
   spec.description   = %q{Rails Metrics}
@@ -24,5 +24,4 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'code_metrics', ['~> 0.1']
   spec.add_runtime_dependency 'churn',        ['~> 0.0']
   spec.add_runtime_dependency 'flog',         ['~> 4.2']
-  spec.add_runtime_dependency 'hirb',         ['~> 0.7']
 end
