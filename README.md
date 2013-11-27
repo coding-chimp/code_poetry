@@ -1,5 +1,7 @@
 # Code Poetry
 
+[![Gem Version][rgb]][rgl] [![Code Climate][ccb]][ccl]
+
 The poor men's [Code Climate][cc].
 
 Analyzes the code of your Rails app and generates a straightforward HTML report.
@@ -35,6 +37,11 @@ This will generate a HTML report to ```metrics/index.html```.
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
+
+[rgl]: http://badge.fury.io/rb/code_poetry
+[rgb]: https://badge.fury.io/rb/code_poetry.png
+[ccb]: https://codeclimate.com/github/coding-chimp/code_poetry.png
+[ccl]: https://codeclimate.com/github/coding-chimp/code_poetry
 
 [cc]: https://codeclimate.com
 [ch]: https://github.com/danmayer/churn
