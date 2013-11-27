@@ -1,6 +1,14 @@
 # Code Poetry
 
-TODO: Write a gem description
+The poor men's [Code Climate][cc].
+
+Analyzes the code of your Rails app and generates a straightforward HTML report.
+
+Currently it uses the following metrics:
+
+* Lines of Code
+* Churns [[Churn][ch]]
+* Code Complexity [[Flog][fl]]
 
 ## Installation
 
@@ -12,13 +20,13 @@ And then execute:
 
     $ bundle
 
-Or install it yourself as:
-
-    $ gem install code_poetry
-
 ## Usage
 
-TODO: Write usage instructions here
+Excecute from your application root:
+
+    $ rake metrics
+
+This will generate a HTML report to ```metrics/index.html```.
 
 ## Contributing
 
@@ -27,3 +35,7 @@ TODO: Write usage instructions here
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
+
+[cc]: https://codeclimate.com
+[ch]: https://github.com/danmayer/churn
+[fl]: https://github.com/seattlerb/flog

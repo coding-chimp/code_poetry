@@ -6,11 +6,11 @@ require 'code_poetry/version'
 Gem::Specification.new do |spec|
   spec.name          = "code_poetry"
   spec.version       = CodePoetry::VERSION
-  spec.authors       = ["coding-chimp"]
+  spec.authors       = ["Bastian Bartmann"]
   spec.email         = ["babartmann@gmail.com"]
-  spec.description   = %q{Rails Metrics}
-  spec.summary       = %q{Rails Metrics}
-  spec.homepage      = "http://code-chimp.org"
+  spec.description   = %q{Analyzes the code of your Rails app and generates a straightforward HTML report.}
+  spec.summary       = %q{The poor men's Code Climate}
+  spec.homepage      = "https://github.com/coding-chimp/code_poetry"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)
@@ -21,7 +21,8 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "bundler", "~> 1.3"
   spec.add_development_dependency "rake"
 
-  spec.add_runtime_dependency 'code_metrics', ['~> 0.1']
-  spec.add_runtime_dependency 'churn',        ['~> 0.0']
-  spec.add_runtime_dependency 'flog',         ['~> 4.2']
+  spec.add_runtime_dependency 'code_poetry-html', ['~> 0.0']
+  spec.add_runtime_dependency 'code_metrics',     ['~> 0.1']
+  spec.add_runtime_dependency 'churn',            ['~> 0.0']
+  spec.add_runtime_dependency 'flog',             ['~> 4.2']
 end
