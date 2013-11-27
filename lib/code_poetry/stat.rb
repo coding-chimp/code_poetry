@@ -1,3 +1,5 @@
+require 'code_poetry/warning_scanner'
+
 module CodePoetry
   class Stat
     attr_accessor :file, :name, :lines, :lines_of_code, :churns, :complexity, :details, :complexity_per_method

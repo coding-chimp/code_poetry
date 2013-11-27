@@ -1,13 +1,7 @@
-require 'rake'
 require 'code_poetry/calculator'
-require 'code_poetry/warning_scanner'
 require 'code_poetry/stat'
+require 'code_poetry/formatter'
 require 'code_poetry-html'
-require 'churn/churn_calculator'
-require 'flog_cli'
-require 'hirb'
-
-require 'ripper'
 
 module CodePoetry
   class CLI

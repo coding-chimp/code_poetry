@@ -1,3 +1,7 @@
+require 'churn/churn_calculator'
+require 'flog_cli'
+require 'ripper'
+
 module CodePoetry
   class Calculator
     def initialize(files)
