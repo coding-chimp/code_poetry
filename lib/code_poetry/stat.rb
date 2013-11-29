@@ -2,13 +2,14 @@ require 'code_poetry/warning_scanner'
 
 module CodePoetry
   class Stat
-    attr_accessor :file, :name, :lines, :lines_of_code, :churns, :complexity, :details, :complexity_per_method
+    attr_accessor :file, :name, :lines, :lines_of_code, :churns, :complexity, :details, :smells, :complexity_per_method
 
     def initialize(file)
       @lines_of_code, @churns, @complexity, @complexity_per_method = 0, 0, 0, 0
       @file    = file
       @lines   = {}
       @details = []
+      @smells  = []
 
       parse_file
     end
@@ -53,6 +54,11 @@ module CodePoetry
       end
 
       @method
+    end
+
+    def set_smells
+      set_class_smells
+      set_smelly_methods
     end
 
   private
@@ -128,6 +134,20 @@ module CodePoetry
     def indentation_warnings
       warning_scanner = WarningScanner.new
       warning_scanner.scan(@content)
+    end
+
+    def set_class_smells
+      @smells << {type: "ComplexClass"} if @complexity > 150
+
+      method_definition = @details.select{|method| method[:name] == "none"}[0]
+      if method_definition[:complexity] > 40
+        @smells << {type: "ComplexClassDefinition", method: method_definition}
+      end
+    end
+
+    def set_smelly_methods
+      smelly_methods = @details.select{|method| method[:complexity] > 25 && method[:name] != "none"}
+      @smells.concat(smelly_methods.map{|method| {type: "ComplexMethod", method: method}})
     end
   end
 end
