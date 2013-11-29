@@ -90,7 +90,7 @@ module CodePoetry
             last_line = find_last_line(name, first_line)
           end
 
-          @methods << Method.new(name, first_line, last_line)
+          @methods << Method.new(element.first, name, first_line, last_line)
         else
           scan_sexp(element)
         end
