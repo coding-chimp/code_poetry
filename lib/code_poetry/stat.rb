@@ -1,14 +1,16 @@
+require 'code_poetry/method'
 require 'code_poetry/warning_scanner'
 
 module CodePoetry
   class Stat
-    attr_accessor :file, :name, :lines, :lines_of_code, :churns, :complexity, :details, :smells, :complexity_per_method
+    attr_accessor :file, :name, :lines, :lines_of_code, :churns, :complexity, :methods, :smells
+    attr_accessor :complexity_per_method, :definition_complexity
 
     def initialize(file)
-      @lines_of_code, @churns, @complexity, @complexity_per_method = 0, 0, 0, 0
+      @lines_of_code, @churns, @complexity, @complexity_per_method, @definition_complexity = 0, 0, 0, 0, 0
       @file    = file
       @lines   = {}
-      @details = []
+      @methods = []
       @smells  = []
 
       parse_file
@@ -19,41 +21,19 @@ module CodePoetry
     end
 
     def get_method(name)
-      method = details.select{|method| method[:name] == name}
-      method[0] unless method.empty?
+      method = @methods.find{|method| method.name == name}
     end
 
-    def set_method_complexity(name, complexity)
-      method = details.select{|method| method[:name] == name}
-      method[0][:complexity] = complexity unless method.empty?
-    end
-
-    def set_outside_of_methods_complexity(complexity)
-      @details.unshift({name: "none", complexity: complexity})
+    def set_method_complexity(name, score)
+      if method = get_method(name)
+        method.complexity = score.round(0)
+      else
+        @definition_complexity += score
+      end
     end
 
     def get_method_at_line(line)
-      @method = nil
-
-      @details.each do |detail|
-        next if detail[:first_line].nil?
-
-        if detail[:last_line].nil?
-          if detail[:first_line] == line
-            @method = detail
-            break
-          else
-            next
-          end
-        end
-
-        if detail[:first_line] <= line && detail[:last_line] >= line
-          @method = detail
-          break
-        end
-      end
-
-      @method
+      method = @methods.find{|method| method.first_line <= line && method.last_line >= line}
     end
 
     def set_smells
@@ -103,13 +83,13 @@ module CodePoetry
           name, first_line = find_method_params(element)
 
           if @indentation_warnings['def'] && @indentation_warnings['def'].any? { |first, last| first == first_line }
-            warning = @indentation_warnings['def'].select{|first, last| first == first_line}[0]
+            warning = @indentation_warnings['def'].find{|first, last| first == first_line}
             last_line = warning[1]
           else
             last_line = find_last_line(name, first_line)
           end
 
-          @details << {name: name, first_line: first_line, last_line: last_line, complexity: 0}
+          @methods << Method.new(name, first_line, last_line)
         else
           scan_sexp(element)
         end
@@ -139,14 +119,11 @@ module CodePoetry
     def set_class_smells
       @smells << {type: "ComplexClass"} if @complexity > 150
 
-      method_definition = @details.select{|method| method[:name] == "none"}[0]
-      if method_definition[:complexity] > 40
-        @smells << {type: "ComplexClassDefinition", method: method_definition}
-      end
+      @smells << {type: "ComplexClassDefinition"} if @definition_complexity > 40
     end
 
     def set_smelly_methods
-      smelly_methods = @details.select{|method| method[:complexity] > 25 && method[:name] != "none"}
+      smelly_methods = @methods.select{|method| method.smelly?}
       @smells.concat(smelly_methods.map{|method| {type: "ComplexMethod", method: method}})
     end
   end
