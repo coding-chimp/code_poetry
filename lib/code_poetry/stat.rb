@@ -1,5 +1,6 @@
 require 'code_poetry/method'
 require 'code_poetry/warning_scanner'
+require 'code_poetry/smell'
 
 module CodePoetry
   class Stat
@@ -38,7 +39,7 @@ module CodePoetry
 
     def set_smells
       set_class_smells
-      set_smelly_methods
+      set_method_smells
     end
 
   private
@@ -117,14 +118,13 @@ module CodePoetry
     end
 
     def set_class_smells
-      @smells << {type: "ComplexClass"} if @complexity > 150
-
-      @smells << {type: "ComplexClassDefinition"} if @definition_complexity > 40
+      @smells << Smell.new("ComplexClass")           if @complexity > 150
+      @smells << Smell.new("ComplexClassDefinition") if @definition_complexity > 40
     end
 
-    def set_smelly_methods
+    def set_method_smells
       smelly_methods = @methods.select{|method| method.smelly?}
-      @smells.concat(smelly_methods.map{|method| {type: "ComplexMethod", method: method}})
+      @smells.concat smelly_methods.map{|method| Smell.new("ComplexMethod", method)}
     end
   end
 end
