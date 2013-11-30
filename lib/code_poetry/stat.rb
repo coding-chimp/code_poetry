@@ -34,7 +34,7 @@ module CodePoetry
     end
 
     def get_method_at_line(line)
-      method = @methods.find{|method| method.first_line <= line && method.last_line >= line}
+      @methods.find{|method| method.first_line <= line && method.last_line >= line}
     end
 
     def set_smells

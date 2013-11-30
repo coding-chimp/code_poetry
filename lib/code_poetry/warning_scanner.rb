@@ -13,7 +13,7 @@ module CodePoetry
         status, @warnings, process = validate(source)
       end
 
-      @indentation_warnings = parse_warnings
+      parse_warnings
     end
 
   private

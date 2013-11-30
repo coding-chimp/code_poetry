@@ -3,7 +3,7 @@ require 'ripper'
 require_relative '../lib/code_poetry/stat'
 
 describe CodePoetry::Stat do
-  let(:stat) { CodePoetry::Stat.new(test_file_path(1)) }
+  let(:stat) { CodePoetry::Stat.new(test_file(1)) }
 
   describe ".initialize" do
     it "sets the correct stat name" do
@@ -30,7 +30,7 @@ describe CodePoetry::Stat do
     end
 
     it "sets the methods correctly even if they have indentation errors" do
-      stat = CodePoetry::Stat.new(test_file_path(2))
+      stat = CodePoetry::Stat.new(test_file(2))
 
       expect(stat.methods.count).to eq(2)
 
