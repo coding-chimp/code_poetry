@@ -22,7 +22,7 @@ module CodePoetry
     end
 
     def get_method(name)
-      method = @methods.find{|method| method.name == name}
+      @methods.find{|method| method.name == name}
     end
 
     def set_method_complexity(name, score)
