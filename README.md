@@ -1,6 +1,6 @@
 # Code Poetry
 
-[![Gem Version][rgb]][rgl] [![Code Climate][ccb]][ccl]
+[![Gem Version][rgb]][rgl] [![Build Status][trb]][trl] [![Code Climate][ccb]][ccl]
 
 The poor men's [Code Climate][cc].
 
@@ -38,8 +38,10 @@ This will generate a HTML report to ```metrics/index.html```.
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
 
-[rgl]: http://badge.fury.io/rb/code_poetry
 [rgb]: https://badge.fury.io/rb/code_poetry.png
+[rgl]: http://badge.fury.io/rb/code_poetry
+[trb]: https://travis-ci.org/coding-chimp/code_poetry.png?branch=master
+[trl]: https://travis-ci.org/coding-chimp/code_poetry
 [ccb]: https://codeclimate.com/github/coding-chimp/code_poetry.png
 [ccl]: https://codeclimate.com/github/coding-chimp/code_poetry
 
