@@ -22,7 +22,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rake"
 
   spec.add_runtime_dependency 'code_poetry-html', ['~> 0.0']
-  spec.add_runtime_dependency 'code_metrics',     ['~> 0.1']
   spec.add_runtime_dependency 'churn',            ['~> 0.0']
   spec.add_runtime_dependency 'flog',             ['~> 4.2']
 end
