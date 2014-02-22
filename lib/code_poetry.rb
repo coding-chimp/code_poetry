@@ -9,7 +9,6 @@ module CodePoetry
   end
 
   class << self
-
     def root
       return @root if defined? @root
       @root = File.expand_path(Dir.getwd)
@@ -29,6 +28,5 @@ module CodePoetry
     def project_name
       File.basename(root.split('/').last).capitalize.gsub('_', ' ')
     end
-
   end
 end

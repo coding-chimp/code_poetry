@@ -4,7 +4,7 @@ require_relative '../lib/code_poetry/warning_scanner'
 describe CodePoetry::WarningScanner do
   let(:scanner) { CodePoetry::WarningScanner.new }
 
-  describe ".scan" do
+  describe '#scan' do
     it "returns an array with warnings for every indendation in the source" do
       source = File.open(test_file(1), "r").read
       expect(scanner.scan(source).size).to eq(0)

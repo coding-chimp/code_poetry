@@ -1,6 +1,6 @@
-require 'churn/churn_calculator'
+require 'churn/calculator'
 require 'flog_cli'
-require 'ripper'
+require 'flay'
 
 module CodePoetry
   class Calculator
@@ -14,18 +14,13 @@ module CodePoetry
       puts 'Calculating'
 
       measure_churns
+      measure_flogs
+      measure_flay
 
-      @files.each do |file|
-        stat = Stat.new(file)
-
-        stat.set_churns(@churns[file])
-        measure_flog(stat)
+      @stats.each do |stat|
+        stat.set_churns(@churns[stat.file])
         stat.set_smells
-
-        @stats << stat
       end
-
-      @stats
     end
 
   private
@@ -35,6 +30,16 @@ module CodePoetry
 
       churns[:churn][:changes].each do |churn|
         @churns[churn[:file_path]] = churn[:times_changed]
+      end
+    end
+
+    def measure_flogs
+      @files.each do |file|
+        stat = Stat.new(file)
+
+        measure_flog(stat)
+
+        @stats << stat
       end
     end
 
@@ -54,7 +59,55 @@ module CodePoetry
         end
       end
 
-      stat.definition_complexity = stat.definition_complexity.round(0)
+      stat.round_definition_complexity
+    end
+
+    def measure_flay
+      flay = Flay.new
+      flay.process(*@files)
+      flay.analyze
+
+      flays = sort_flays(flay)
+
+      flays.each do |hash, mass|
+        nodes = flay.hashes[hash]
+        same = flay.identical[hash]
+        node = nodes.first
+
+        match, bonus = same ? ["Identical", "*#{nodes.size}"] : ["Similar",   ""]
+
+        dups = []
+
+        nodes.sort_by { |node| [node.file, node.line] }.each do |node|
+          stat   = find_stat(node.file)
+          method = stat.get_method_at_line(node.line)
+
+          method.increase_duplication_count
+
+          dups << [stat, method]
+        end
+
+        methods = dups.map{ |dup| dup[1] }
+
+        dups.each do |stat, method|
+          stat.duplications << Duplication.new(match, node.first, mass, methods)
+        end
+      end
+    end
+
+    def sort_flays(flay)
+      flay.masses.sort_by do |h, m|
+        [
+          -m,
+          flay.hashes[h].first.file,
+          flay.hashes[h].first.line,
+          flay.hashes[h].first.first.to_s
+        ]
+      end
+    end
+
+    def find_stat(filename)
+      @stats.detect{ |stat| stat.file == filename }
     end
   end
 end
