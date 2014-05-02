@@ -1,10 +1,11 @@
 require 'code_poetry/method'
 require 'code_poetry/warning_scanner'
-require 'code_poetry/smell'
-require 'code_poetry/duplication'
 require 'ripper'
 
 module CodePoetry
+  Duplication = Struct.new(:severity, :node, :mass, :methods)
+  Smell = Struct.new(:type, :object)
+
   class Stat
     attr_reader :duplication, :file, :lines, :lines_of_code, :name, :methods
     attr_accessor :churns, :complexity, :complexity_per_method, :definition_complexity
@@ -130,8 +131,8 @@ module CodePoetry
     end
 
     def set_class_smells
-      @smells << Smell.new("complex_class")            if @complexity > 150
-      @smells << Smell.new("complex_class_definition") if @definition_complexity > 40
+      @smells << Smell.new("complex_class", nil)            if @complexity > 150
+      @smells << Smell.new("complex_class_definition", nil) if @definition_complexity > 40
     end
 
     def set_method_smells
