@@ -1,5 +1,5 @@
 require 'churn/calculator'
-require 'flog_cli'
+require 'code_poetry/complexity_calculator'
 require 'flay'
 
 module CodePoetry
@@ -14,7 +14,7 @@ module CodePoetry
       puts 'Calculating'
 
       measure_churns
-      measure_flogs
+      measure_complexity
       measure_flay
 
       @stats.each do |stat|
@@ -33,33 +33,12 @@ module CodePoetry
       end
     end
 
-    def measure_flogs
+    def measure_complexity
       @files.each do |file|
         stat = Stat.new(file)
-
-        measure_flog(stat)
-
+        ComplexityCalculator.new(stat).measure
         @stats << stat
       end
-    end
-
-    def measure_flog(stat)
-      flogger = FlogCLI.new(all: true)
-      flogger.flog(stat.file)
-      flogger.calculate
-
-      unless flogger.scores.empty?
-        klass                      = flogger.scores.first[0]
-        stat.complexity            = flogger.total_score.round(0)
-        stat.complexity_per_method = flogger.average.round(0)
-
-        flogger.method_scores[klass].each do |name, score|
-          name = (name.match(/#(.+)/) || name.match(/::(.+)/))[1]
-          stat.set_method_complexity(name, score)
-        end
-      end
-
-      stat.round_definition_complexity
     end
 
     def measure_flay
