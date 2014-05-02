@@ -10,7 +10,8 @@ Currently it uses the following metrics:
 
 * Lines of Code
 * Churns [[Churn][ch]]
-* Code Complexity [[Flog][fl]]
+* Code Complexity [[Flog][flog]]
+* Duplication [[Flay][flay]]
 
 ## Installation
 
@@ -47,4 +48,5 @@ This will generate a HTML report to ```metrics/index.html```.
 
 [cc]: https://codeclimate.com
 [ch]: https://github.com/danmayer/churn
-[fl]: https://github.com/seattlerb/flog
+[flog]: https://github.com/seattlerb/flog
+[flay]: https://github.com/seattlerb/flay
