@@ -5,11 +5,11 @@ require 'code_poetry-html'
 
 module CodePoetry
   class CLI
-    DIRECOTRIES = %w[app lib]
-    EXTENSIONS = %w[rb rake]
+    DIRECOTRIES = 'app,lib'
+    EXTENSIONS = 'rb,rake'
 
-    def self.excecute(directories = DIRECOTRIES)
-      files = Array(expand_directories_to_files(*directories)).compact
+    def self.excecute(path)
+      files = Array(expand_directories_to_files(path).sort).compact
       calculator = Calculator.new(files)
       stats = calculator.calculate
 
@@ -19,18 +19,12 @@ module CodePoetry
 
   private
 
-    def self.expand_directories_to_files(*directories)
-      directories.flatten.map { |element|
-        if File.directory?(element)
-          Dir[expanded_diroctory_path(element)]
-        else
-          element
-        end
-      }.flatten.sort
-    end
-
-    def self.expanded_diroctory_path(directory)
-      File.join(directory, "{#{DIRECOTRIES.join(',')}}**", '**', "*.{#{EXTENSIONS.join(',')}}")
+    def self.expand_directories_to_files(path)
+      if path
+        Dir[File.join(path, "{#{DIRECOTRIES}}**", '**', "*.{#{EXTENSIONS}}")]
+      else
+        FileList[File.join("{#{DIRECOTRIES}}**", '**', "*.{#{EXTENSIONS}}")]
+      end
     end
   end
 end
