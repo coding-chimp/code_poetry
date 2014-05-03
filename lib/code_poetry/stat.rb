@@ -12,11 +12,11 @@ module CodePoetry
     attr_accessor :duplications, :smells
 
     def initialize(file)
-      @file    = file
+      @file = file
       @lines_of_code, @churns = 0, 0
       @complexity, @complexity_per_method, @definition_complexity = 0, 0, 0
       @methods, @smells, @duplications = [], [], []
-      @lines   = {}
+      @lines = {}
 
       parse_file
     end
