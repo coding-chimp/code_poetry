@@ -1,18 +1,22 @@
 require 'code_poetry/method'
 require 'code_poetry/warning_scanner'
-require 'code_poetry/smell'
+require 'ripper'
 
 module CodePoetry
+  Duplication = Struct.new(:severity, :node, :mass, :methods)
+  Smell = Struct.new(:type, :object)
+
   class Stat
-    attr_accessor :file, :name, :lines, :lines_of_code, :churns, :complexity, :methods, :smells
-    attr_accessor :complexity_per_method, :definition_complexity
+    attr_reader :duplication, :file, :lines, :lines_of_code, :name, :methods
+    attr_accessor :churns, :complexity, :complexity_per_method, :definition_complexity
+    attr_accessor :duplications, :smells
 
     def initialize(file)
-      @lines_of_code, @churns, @complexity, @complexity_per_method, @definition_complexity = 0, 0, 0, 0, 0
-      @file    = file
-      @lines   = {}
-      @methods = []
-      @smells  = []
+      @file = file
+      @lines_of_code, @churns = 0, 0
+      @complexity, @complexity_per_method, @definition_complexity = 0, 0, 0
+      @methods, @smells, @duplications = [], [], []
+      @lines = {}
 
       parse_file
     end
@@ -22,7 +26,7 @@ module CodePoetry
     end
 
     def get_method(name)
-      @methods.find{|method| method.name == name}
+      @methods.detect { |method| method.name == name }
     end
 
     def set_method_complexity(name, score)
@@ -34,18 +38,27 @@ module CodePoetry
     end
 
     def get_method_at_line(line)
-      @methods.find{|method| method.first_line <= line && method.last_line >= line}
+      @methods.detect { |method| method.first_line <= line && method.last_line >= line }
     end
 
     def set_smells
       set_class_smells
       set_method_smells
+      set_duplication_smells
+    end
+
+    def duplication
+      @duplications.map { |duplication| duplication.mass / duplication.methods.count }.inject(0, :+)
+    end
+
+    def round_definition_complexity
+      @definition_complexity = @definition_complexity.round(0)
     end
 
   private
 
     def parse_file
-      @content = File.open(@file, "r").read
+      @content = File.open(@file, 'r').read
       @indentation_warnings = indentation_warnings
 
       set_name
@@ -54,7 +67,7 @@ module CodePoetry
     end
 
     def set_name
-      @content = File.open(@file, "r").read
+      @content = File.open(@file, 'r').read
 
       if match = /^\s*class\s+(\S+)/.match(@content) || /^\s*module\s+(\S+)/.match(@content)
         @name = match[1]
@@ -84,13 +97,13 @@ module CodePoetry
           name, first_line = find_method_params(element)
 
           if @indentation_warnings['def'] && @indentation_warnings['def'].any? { |first, last| first == first_line }
-            warning = @indentation_warnings['def'].find{|first, last| first == first_line}
+            warning = @indentation_warnings['def'].detect{ |first, last| first == first_line }
             last_line = warning[1]
           else
             last_line = find_last_line(name, first_line)
           end
 
-          @methods << Method.new(element.first, name, first_line, last_line)
+          @methods << Method.new(element.first, name, first_line, last_line, @file)
         else
           scan_sexp(element)
         end
@@ -105,6 +118,11 @@ module CodePoetry
       end
     end
 
+    def indentation_warnings
+      warning_scanner = WarningScanner.new
+      warning_scanner.scan(@content)
+    end
+
     def find_last_line(token_name, line)
       token_indentation = @lines[line].index('def')
 
@@ -112,19 +130,26 @@ module CodePoetry
       last_line ? last_line + line + 1 : nil
     end
 
-    def indentation_warnings
-      warning_scanner = WarningScanner.new
-      warning_scanner.scan(@content)
-    end
-
     def set_class_smells
-      @smells << Smell.new("ComplexClass")           if @complexity > 150
-      @smells << Smell.new("ComplexClassDefinition") if @definition_complexity > 40
+      @smells << Smell.new('complex_class', nil)            if @complexity > 150
+      @smells << Smell.new('complex_class_definition', nil) if @definition_complexity > 40
     end
 
     def set_method_smells
-      smelly_methods = @methods.select{|method| method.smelly?}
-      @smells.concat smelly_methods.map{|method| Smell.new("ComplexMethod", method)}
+      smelly_methods = @methods.select { |method| method.smelly? }
+      @smells.concat smelly_methods.map { |method| Smell.new('complex_method', method) }
+    end
+
+    def set_duplication_smells
+      unique_duplications = []
+
+      @duplications.each do |duplication|
+        unless unique_duplications.any? { |d| d.methods == duplication.methods }
+          unique_duplications << duplication
+        end
+      end
+
+      @smells.concat unique_duplications.map { |duplication| Smell.new('duplication', duplication) }
     end
   end
 end

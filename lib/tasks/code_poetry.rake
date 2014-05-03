@@ -1,5 +1,8 @@
 desc "Generate code metrics"
-task :metrics do
+task :metrics, :path do |t, args|
   require 'code_poetry/cli'
-  CodePoetry::CLI.excecute
+
+  path = ARGV.last unless ARGV.last == 'metrics'
+
+  CodePoetry::CLI.excecute(path)
 end

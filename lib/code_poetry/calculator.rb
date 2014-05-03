@@ -1,6 +1,6 @@
-require 'churn/churn_calculator'
-require 'flog_cli'
-require 'ripper'
+require 'churn/calculator'
+require 'code_poetry/complexity_calculator'
+require 'code_poetry/duplication_calculator'
 
 module CodePoetry
   class Calculator
@@ -14,18 +14,13 @@ module CodePoetry
       puts 'Calculating'
 
       measure_churns
+      measure_complexity
+      measure_duplication
 
-      @files.each do |file|
-        stat = Stat.new(file)
-
-        stat.set_churns(@churns[file])
-        measure_flog(stat)
+      @stats.each do |stat|
+        stat.set_churns(@churns[stat.file])
         stat.set_smells
-
-        @stats << stat
       end
-
-      @stats
     end
 
   private
@@ -38,23 +33,16 @@ module CodePoetry
       end
     end
 
-    def measure_flog(stat)
-      flogger = FlogCLI.new(all: true)
-      flogger.flog(stat.file)
-      flogger.calculate
-
-      unless flogger.scores.empty?
-        klass                      = flogger.scores.first[0]
-        stat.complexity            = flogger.total_score.round(0)
-        stat.complexity_per_method = flogger.average.round(0)
-
-        flogger.method_scores[klass].each do |name, score|
-          name = (name.match(/#(.+)/) || name.match(/::(.+)/))[1]
-          stat.set_method_complexity(name, score)
-        end
+    def measure_complexity
+      @files.each do |file|
+        stat = Stat.new(file)
+        ComplexityCalculator.new(stat).measure
+        @stats << stat
       end
+    end
 
-      stat.definition_complexity = stat.definition_complexity.round(0)
+    def measure_duplication
+      DuplicationCalculator.new(@files, @stats).measure
     end
   end
 end
