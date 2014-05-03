@@ -23,7 +23,7 @@ module CodePoetry
     end
 
     def pretty_name
-      symbol = @node == :def ? "." : "#"
+      symbol = @node == :def ? '.' : '#'
       "#{symbol}#{@name}"
     end
 

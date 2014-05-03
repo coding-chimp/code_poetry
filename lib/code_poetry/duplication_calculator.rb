@@ -49,7 +49,7 @@ module CodePoetry
     end
 
     def fetch_stats_and_methods(nodes)
-      nodes.inject([[],[]]) do |result, node|
+      nodes.inject([[], []]) do |result, node|
         stat = find_stat(node.file)
         result[0] << stat
 
@@ -66,7 +66,7 @@ module CodePoetry
     end
 
     def severity(hash)
-      @flay.identical[hash] ? "Identical" : "Similar"
+      @flay.identical[hash] ? 'Identical' : 'Similar'
     end
 
     def note_type(nodes)
