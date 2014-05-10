@@ -1,6 +1,6 @@
 # Code Poetry
 
-[![Gem Version][rgb]][rgl] [![Build Status][trb]][trl] [![Code Climate][ccb]][ccl]
+[![Gem Version][rgb]][rgl] [![Build Status][trb]][trl] [![Code Climate][ccb]][ccl] [![Code Climate][ccc]][ccl]
 
 The poor men's [Code Climate][cc].
 
@@ -45,6 +45,7 @@ This will generate a HTML report to ```metrics/index.html```.
 [trl]: https://travis-ci.org/coding-chimp/code_poetry
 [ccb]: https://codeclimate.com/github/coding-chimp/code_poetry.png
 [ccl]: https://codeclimate.com/github/coding-chimp/code_poetry
+[ccc]: https://codeclimate.com/github/coding-chimp/code_poetry/coverage.png
 
 [cc]: https://codeclimate.com
 [ch]: https://github.com/danmayer/churn
