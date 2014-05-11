@@ -10,7 +10,7 @@ module CodePoetry
 
     def self.excecute(path)
       files = Array(expand_directories_to_files(path).sort).compact
-      calculator = Calculator.new(files)
+      calculator = Calculator.new(path, files)
       stats = calculator.calculate
 
       formatter = CodePoetry::Formatter::HTMLFormatter.new

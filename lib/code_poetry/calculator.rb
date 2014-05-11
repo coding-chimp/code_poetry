@@ -1,44 +1,47 @@
-require 'churn/calculator'
 require 'code_poetry/complexity_calculator'
+require 'code_poetry/churn_calculator'
 require 'code_poetry/duplication_calculator'
 
 module CodePoetry
   class Calculator
-    def initialize(files)
+    def initialize(path, files)
+      @path   = path
       @files  = files
-      @churns = {}
       @stats  = []
     end
 
     def calculate
       puts 'Calculating'
 
-      measure_churns
-      measure_complexity
+      create_stats
       measure_duplication
 
       @stats.each do |stat|
-        stat.set_churns(@churns[stat.file])
         stat.set_smells
       end
     end
 
-  private
+    private
 
-    def measure_churns
-      churns = Churn::ChurnCalculator.new(history: false).report(false)
-
-      churns[:churn][:changes].each do |churn|
-        @churns[churn[:file_path]] = churn[:times_changed]
+    def create_stats
+      @files.each do |file|
+        stat = Stat.new(file)
+        measure_complexity(stat)
+        measure_churns(stat)
+        @stats << stat
       end
     end
 
-    def measure_complexity
-      @files.each do |file|
-        stat = Stat.new(file)
-        ComplexityCalculator.new(stat).measure
-        @stats << stat
-      end
+    def measure_complexity(stat)
+      ComplexityCalculator.new(stat).measure
+    end
+
+    def measure_churns(stat)
+      churn_calculator.calculate(stat)
+    end
+
+    def churn_calculator
+      @churn_calculator ||= ChurnCalculator.new(@path)
     end
 
     def measure_duplication
