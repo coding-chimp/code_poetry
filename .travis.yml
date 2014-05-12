@@ -5,3 +5,5 @@ rvm:
 addons:
   code_climate:
     repo_token: c49c08d3364e76e4b32865edaadc8c9d78e6510b8786093db4520c9e53bf6b96
+notifications:
+  slack: netflower:CKRCarTKgVo5NzdgryF89DED
