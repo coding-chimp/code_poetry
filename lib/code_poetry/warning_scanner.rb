@@ -5,13 +5,7 @@ module CodePoetry
     INDENTATION_WARNING_REGEXP = /at 'end' with '(def|class|module)' at (\d+)\z/
 
     def scan(source)
-      if defined? Bundler
-        Bundler.with_clean_env do
-          status, @warnings, process = validate(source)
-        end
-      else
-        status, @warnings, process = validate(source)
-      end
+      status, @warnings, process = validate(source)
 
       parse_warnings
     end

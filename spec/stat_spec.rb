@@ -7,7 +7,11 @@ describe CodePoetry::Stat do
 
   describe '#initialize' do
     it 'sets the correct stat name' do
+      stat = CodePoetry::Stat.new(test_file(1))
+
       expect(@stat.name).to eq('Foo')
+      expect(stat.name).to eq('Foo')
+      stat
     end
 
     it 'counts the correct number of lines and lines of code' do
@@ -140,6 +144,16 @@ describe CodePoetry::Stat do
       @stat.duplications = [double(mass: 10, methods: [double]), double(mass: 5, methods: [double])]
 
       expect(@stat.duplication).to eq(15)
+    end
+  end
+
+  describe '#round_definition_complexity' do
+    it 'should rount the definition complexity' do
+      @stat.definition_complexity = 2.15
+
+      @stat.round_definition_complexity
+
+      expect(@stat.definition_complexity).to eq(2)
     end
   end
 end
