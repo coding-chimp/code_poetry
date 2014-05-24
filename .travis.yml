@@ -4,6 +4,9 @@ rvm:
   - 2.0.0
 addons:
   code_climate:
-    repo_token: c49c08d3364e76e4b32865edaadc8c9d78e6510b8786093db4520c9e53bf6b96
+    repo_token:
+      secure: "JJb9iyhNuNNUpnjGMWjNNIjaPOST53+vAzb6RHdzNKRC6jKgWZMXZsJ3Tzb6xFe21l+FmdBk+mKWVFHoBvUOlK34++CeXwDek8PhFi6bp7lJASqUabB66o32WPdTYnWy4WV5BesXJyFeKRL2SyFGoOw8B8Cpx+DrOVLR71s5Ovs="
 notifications:
-  slack: netflower:CKRCarTKgVo5NzdgryF89DED
+  slack: 
+    rooms:
+      secure: "bXtxfw97KhPDFNiS402PghKK2fvcfF4diZUWPaJu2VhRzBabveD+j4F4XQW7glRXcGzypOuCYqyTqHFXjjItO52+PEz4gUwak42UnFjHcGQ3//OeQB9bqCkR7IgyjILfWOS57JJE9XHa34p+cWnYntQ/u10rTiyivC1vfmjiufs="
