@@ -1,53 +1,64 @@
-require 'spec_helper'
+require_relative 'test_helper'
 require_relative '../lib/code_poetry/method'
 
 describe CodePoetry::Method do
-  let(:method) { CodePoetry::Method.new(:def, 'smelly?', 8, 10, 'path') }
+  let(:meth) { CodePoetry::Method.new(:def, 'smelly?', 8, 10, 'path') }
 
   describe '#smelly?' do
     it 'returns true if the complexity is greater 25' do
-      method.complexity = 26
-      expect(method.smelly?).to be_true
+      meth.complexity = 26
+
+      meth.smelly?.must_equal true
     end
 
     it 'returns false if the complexity is less or equal 25' do
-      method.complexity = 25
-      expect(method.smelly?).to be_false
+      meth.complexity = 25
+
+      meth.smelly?.must_equal false
     end
   end
 
   describe '#duplicated?' do
     it 'returns true if the duplication count is greater 0' do
-      method.duplication_count = 1
-      expect(method.duplicated?).to be_true
+      meth.duplication_count = 1
+
+      meth.duplicated?.must_equal true
     end
 
     it 'returns false if the duplication count is equal 0' do
-      method.duplication_count = 0
-      expect(method.duplicated?).to be_false
+      meth.duplication_count = 0
+
+      meth.duplicated?.must_equal false
     end
   end
 
   describe '#pretty_name' do
     it 'prepends a "." to the name if the method is an instance method' do
-      expect(method.pretty_name).to eq('.smelly?')
+      meth.node = :def
+
+      meth.pretty_name.must_equal '.smelly?'
     end
 
     it 'prepends a "#" to the name if the method is an class method' do
-      method.node = :defs
-      expect(method.pretty_name).to eq('#smelly?')
+      meth.node = :defs
+
+      meth.pretty_name.must_equal'#smelly?'
     end
   end
 
   describe '#pretty_location' do
-    it 'something' do
-      expect(method.pretty_location).to eq('path:8..10')
+    it 'returns the location and line number range' do
+      meth.pretty_location.must_equal 'path:8..10'
     end
   end
 
   describe '#increase_duplication_count' do
     it 'increases the duplication count by 1' do
-      expect { method.increase_duplication_count }.to change { method.duplication_count }.by(1)
+      before = meth.duplication_count
+
+      meth.increase_duplication_count
+
+      meth.duplication_count.must_equal before + 1
     end
   end
 end

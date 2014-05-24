@@ -4,7 +4,6 @@ source 'https://rubygems.org'
 gemspec
 
 group :test do
-  gem 'rspec'
+  gem 'codeclimate-test-reporter', require: false
   gem 'simplecov', require: false
-  gem 'codeclimate-test-reporter', require: nil
 end

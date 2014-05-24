@@ -1,4 +1,4 @@
-require "codeclimate-test-reporter"
+require 'codeclimate-test-reporter'
 CodeClimate::TestReporter.start
 
 require 'simplecov'
@@ -6,7 +6,9 @@ SimpleCov.start do
   add_filter 'spec'
 end if ENV['COVERAGE']
 
-require 'rspec/autorun'
+require 'minitest/autorun'
+require 'mocha/mini_test'
+require 'minitest/pride'
 
 def test_file(file_name)
   File.join(

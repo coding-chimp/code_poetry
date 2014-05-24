@@ -8,8 +8,8 @@ module CodePoetry
 
   class Stat
     attr_reader :duplication, :file, :lines, :lines_of_code, :name, :methods
-    attr_accessor :churns, :complexity, :complexity_per_method, :definition_complexity
-    attr_accessor :duplications, :smells
+    attr_accessor :churns, :complexity, :complexity_per_method
+    attr_accessor :definition_complexity, :duplications, :smells
 
     def initialize(file)
       @file = file
