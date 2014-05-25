@@ -3,19 +3,28 @@ class ChurnCalculator
     @repo_path = repo_path
   end
 
-  def calculate(stat)
-    result_string = get_churns(stat.file)
-    stat.set_churns(parse(result_string))
+  def calculate
+    parse_log_for_churns
   end
 
   private
 
-  def get_churns(file)
-    `cd #{@repo_path} && git log --all --name-only --format='format:' #{file} | grep -v '^$' | uniq -c`
+  def parse_log_for_churns
+    churns = {}
+
+    logs.each do |line|
+      churns[line] ? churns[line] += 1 : churns[line] = 1
+    end
+
+    churns
   end
 
-  def parse(string)
-    count, _ = string.split(' ')
-    count.to_i
+  def logs
+    `cd #{@repo_path} && \
+      git log --all --name-only --format='format:' | grep -v '^$'`.split("\n")
+  end
+
+  def sort_churns
+    @churns.sort! {|first,second| second[1] <=> first[1]}
   end
 end

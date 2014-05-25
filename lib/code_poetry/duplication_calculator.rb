@@ -62,7 +62,7 @@ module CodePoetry
     end
 
     def find_stat(filename)
-      @stats.detect { |stat| stat.file == filename }
+      @stats.detect { |stat| stat.absolute_path == filename }
     end
 
     def severity(hash)

@@ -7,12 +7,14 @@ module CodePoetry
   Smell = Struct.new(:type, :object)
 
   class Stat
-    attr_reader :duplication, :file, :lines, :lines_of_code, :name, :methods
+    attr_reader :absolute_path, :duplication, :lines, :lines_of_code, :name
+    attr_reader :methods, :relative_path
     attr_accessor :churns, :complexity, :complexity_per_method
     attr_accessor :definition_complexity, :duplications, :smells
 
-    def initialize(file)
-      @file = file
+    def initialize(path, project_path)
+      @absolute_path = path
+      @relative_path = path.sub("#{project_path}/", '')
       @lines_of_code, @churns = 0, 0
       @complexity, @complexity_per_method, @definition_complexity = 0, 0, 0
       @methods, @smells, @duplications = [], [], []
@@ -58,7 +60,7 @@ module CodePoetry
   private
 
     def parse_file
-      @content = File.open(@file, 'r').read
+      @content = File.open(@absolute_path, 'r').read
       @indentation_warnings = indentation_warnings
 
       set_name
@@ -67,7 +69,7 @@ module CodePoetry
     end
 
     def set_name
-      @content = File.open(@file, 'r').read
+      @content = File.open(@absolute_path, 'r').read
 
       if match = /^\s*class\s+(\S+)/.match(@content) || /^\s*module\s+(\S+)/.match(@content)
         @name = match[1]

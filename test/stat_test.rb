@@ -2,12 +2,12 @@ require_relative 'test_helper'
 require_relative '../lib/code_poetry/stat'
 
 describe CodePoetry::Stat do
-  before(:all) { @stat = CodePoetry::Stat.new(test_file(2)) }
+  before(:all) { @stat = CodePoetry::Stat.new(test_file(2), '') }
   after(:each) { @stat.smells = [] }
 
   describe '#initialize' do
     it 'sets the correct stat name' do
-      stat = CodePoetry::Stat.new(test_file(1))
+      stat = CodePoetry::Stat.new(test_file(1), '')
 
       @stat.name.must_equal 'Foo'
       stat.name.must_equal 'Foo'

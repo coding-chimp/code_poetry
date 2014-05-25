@@ -21,7 +21,7 @@ module CodePoetry
   private
 
     def flog_file
-      @flogger.flog(@stat.file)
+      @flogger.flog(@stat.absolute_path)
       @flogger.calculate
     end
 

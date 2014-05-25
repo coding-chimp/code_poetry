@@ -14,9 +14,12 @@ module CodePoetry
       puts 'Calculating'
 
       create_stats
+      measure_churns
       measure_duplication
 
       @stats.each do |stat|
+        measure_complexity(stat)
+        stat.set_churns(@churns[stat.relative_path])
         stat.set_smells
       end
     end
@@ -24,24 +27,15 @@ module CodePoetry
     private
 
     def create_stats
-      @files.each do |file|
-        stat = Stat.new(file)
-        measure_complexity(stat)
-        measure_churns(stat)
-        @stats << stat
-      end
+      @files.each { |file| @stats << Stat.new(file, @path) }
+    end
+
+    def measure_churns
+      @churns = ChurnCalculator.new(@path).calculate
     end
 
     def measure_complexity(stat)
       ComplexityCalculator.new(stat).measure
-    end
-
-    def measure_churns(stat)
-      churn_calculator.calculate(stat)
-    end
-
-    def churn_calculator
-      @churn_calculator ||= ChurnCalculator.new(@path)
     end
 
     def measure_duplication

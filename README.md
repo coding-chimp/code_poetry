@@ -9,7 +9,7 @@ Analyzes the code of your Rails app and generates a straightforward HTML report.
 Currently it uses the following metrics:
 
 * Lines of Code
-* Churns [[Churn][ch]]
+* Churns
 * Code Complexity [[Flog][flog]]
 * Duplication [[Flay][flay]]
 
@@ -48,6 +48,5 @@ This will generate a HTML report to ```metrics/index.html```.
 [ccc]: https://codeclimate.com/github/coding-chimp/code_poetry/coverage.png
 
 [cc]: https://codeclimate.com
-[ch]: https://github.com/danmayer/churn
 [flog]: https://github.com/seattlerb/flog
 [flay]: https://github.com/seattlerb/flay
