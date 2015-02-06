@@ -39,13 +39,13 @@ This will generate a HTML report to ```metrics/index.html```.
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
 
-[rgb]: https://badge.fury.io/rb/code_poetry.png
+[rgb]: https://badge.fury.io/rb/code_poetry.svg
 [rgl]: http://badge.fury.io/rb/code_poetry
-[trb]: https://travis-ci.org/coding-chimp/code_poetry.png?branch=master
+[trb]: https://travis-ci.org/coding-chimp/code_poetry.svg?branch=master
 [trl]: https://travis-ci.org/coding-chimp/code_poetry
-[ccb]: https://codeclimate.com/github/coding-chimp/code_poetry.png
+[ccb]: https://codeclimate.com/github/coding-chimp/code_poetry/badges/gpa.svg
 [ccl]: https://codeclimate.com/github/coding-chimp/code_poetry
-[ccc]: https://codeclimate.com/github/coding-chimp/code_poetry/coverage.png
+[ccc]: https://codeclimate.com/github/coding-chimp/code_poetry/badges/coverage.svg
 
 [cc]: https://codeclimate.com
 [flog]: https://github.com/seattlerb/flog
