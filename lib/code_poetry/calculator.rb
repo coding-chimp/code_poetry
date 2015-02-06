@@ -27,7 +27,13 @@ module CodePoetry
     private
 
     def create_stats
-      @files.each { |file| @stats << Stat.new(file, @path) }
+      @files.each do |file|
+        stat = Stat.new(file, @path)
+
+        unless stat.name.nil?
+          @stats << stat
+        end
+      end
     end
 
     def measure_churns
