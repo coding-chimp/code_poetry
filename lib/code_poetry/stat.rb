@@ -40,7 +40,9 @@ module CodePoetry
     end
 
     def get_method_at_line(line)
-      @methods.detect { |method| method.first_line <= line && method.last_line >= line }
+      @methods.detect do |method|
+        method.first_line <= line && method.last_line >= line
+      end
     end
 
     def set_smells
@@ -50,7 +52,9 @@ module CodePoetry
     end
 
     def duplication
-      @duplications.map { |duplication| duplication.mass / duplication.methods.count }.inject(0, :+)
+      @duplications.map do |duplication|
+        duplication.mass / duplication.methods.count
+      end.inject(0, :+)
     end
 
     def round_definition_complexity
@@ -105,7 +109,7 @@ module CodePoetry
             last_line = find_last_line(name, first_line)
           end
 
-          @methods << Method.new(element.first, name, first_line, last_line, @file)
+          @methods << Method.new(element.first, name, first_line, last_line, @absolute_path)
         else
           scan_sexp(element)
         end

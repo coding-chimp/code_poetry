@@ -10,8 +10,7 @@ module CodePoetry
       @last_line         = last_line
       @complexity        = 0
       @duplication_count = 0
-
-      @location = location
+      @location          = location.sub './', ''
     end
 
     def smelly?
@@ -34,6 +33,5 @@ module CodePoetry
     def increase_duplication_count
       @duplication_count =+ 1
     end
-
   end
 end

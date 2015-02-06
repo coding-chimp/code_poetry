@@ -39,8 +39,10 @@ module CodePoetry
 
       stats, methods = fetch_stats_and_methods(nodes)
 
-      stats.each do |stat, method|
-        stat.duplications << Duplication.new(severity(hash), note_type(nodes), mass, methods)
+      stats.each do |stat|
+        unless methods.empty?
+          stat.duplications << Duplication.new(severity(hash), note_type(nodes), mass, methods)
+        end
       end
     end
 
@@ -54,8 +56,11 @@ module CodePoetry
         result[0] << stat
 
         method = stat.get_method_at_line(node.line)
-        method.increase_duplication_count
-        result[1] << method
+
+        unless method.nil?
+          method.increase_duplication_count
+          result[1] << method
+        end
 
         result
       end
