@@ -6,10 +6,10 @@ require 'code_poetry-html'
 module CodePoetry
   class CLI
     DIRECOTRIES = 'app,lib'
-    EXTENSIONS = 'rb,rake'
 
     def self.excecute(path)
-      files = Array(expand_directories_to_files(path).sort).compact
+      files = find_files(path)
+
       calculator = Calculator.new(path, files)
       stats = calculator.calculate
 
@@ -17,13 +17,20 @@ module CodePoetry
       formatter.format(stats)
     end
 
-  private
+    private
 
-    def self.expand_directories_to_files(path)
-      if path
-        Dir[File.join(path, "{#{DIRECOTRIES}}**", '**', "*.{#{EXTENSIONS}}")]
+    def self.find_files(path)
+      paths = expand_path_to_files(path)
+      Array(paths).compact.sort
+    end
+
+    def self.expand_path_to_files(path)
+      if File.file?(path)
+        path
+      elsif path.nil?
+        Dir[File.join(".", "{#{DIRECOTRIES}**}", "**", "*.rb")]
       else
-        FileList[File.join("{#{DIRECOTRIES}}**", '**', "*.{#{EXTENSIONS}}")]
+        Dir[File.join(path, '**', "*.rb")]
       end
     end
   end

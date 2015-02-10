@@ -1,6 +1,6 @@
 class ChurnCalculator
-  def initialize(repo_path)
-    @repo_path = repo_path
+  def initialize(path)
+    @repo_path = find_directory(path)
   end
 
   def calculate
@@ -8,6 +8,14 @@ class ChurnCalculator
   end
 
   private
+
+  def find_directory(path)
+    if File.file?(path)
+      File.dirname(path)
+    else
+      path
+    end
+  end
 
   def parse_log_for_churns
     churns = {}

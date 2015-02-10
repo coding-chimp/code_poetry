@@ -5,9 +5,9 @@ require 'code_poetry/duplication_calculator'
 module CodePoetry
   class Calculator
     def initialize(path, files)
-      @path   = path
-      @files  = files
-      @stats  = []
+      @path = path || '.'
+      @files = files
+      @stats = []
     end
 
     def calculate
