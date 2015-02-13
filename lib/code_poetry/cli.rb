@@ -1,20 +1,22 @@
 require 'code_poetry/calculator'
 require 'code_poetry/stat'
 require 'code_poetry/formatter'
-require 'code_poetry-html'
 
 module CodePoetry
   class CLI
     DIRECOTRIES = 'app,lib'
 
-    def self.excecute(path)
+    def self.execute(path, formatter)
       files = find_files(path)
+
+      puts files
 
       calculator = Calculator.new(path, files)
       stats = calculator.calculate
 
-      formatter = CodePoetry::Formatter::HTMLFormatter.new
-      formatter.format(stats)
+      if formatter
+        formatter.format(stats)
+      end
     end
 
     private
@@ -25,10 +27,10 @@ module CodePoetry
     end
 
     def self.expand_path_to_files(path)
-      if File.file?(path)
-        path
-      elsif path.nil?
+      if path.nil?
         Dir[File.join(".", "{#{DIRECOTRIES}**}", "**", "*.rb")]
+      elsif File.file?(path)
+        path
       else
         Dir[File.join(path, '**', "*.rb")]
       end

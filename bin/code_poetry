@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+require "code_poetry/cli"
+
+CodePoetry::CLI.execute(ARGV[0], nil)
