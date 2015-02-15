@@ -1,22 +1,17 @@
-require 'code_poetry/calculator'
-require 'code_poetry/stat'
-require 'code_poetry/formatter'
+require "code_poetry/calculator"
+require "code_poetry/stat"
 
 module CodePoetry
   class CLI
-    DIRECOTRIES = 'app,lib'
+    DIRECOTRIES = "app,lib"
 
     def self.execute(path, formatter)
       files = find_files(path)
 
-      puts files
-
       calculator = Calculator.new(path, files)
       stats = calculator.calculate
 
-      if formatter
-        formatter.format(stats)
-      end
+      formatter.format(stats)
     end
 
     private
@@ -32,7 +27,7 @@ module CodePoetry
       elsif File.file?(path)
         path
       else
-        Dir[File.join(path, '**', "*.rb")]
+        Dir[File.join(path, "**", "*.rb")]
       end
     end
   end

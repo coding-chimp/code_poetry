@@ -1,6 +1,5 @@
 desc 'Generate code metrics'
 task :metrics, :path do |t, args|
-  require 'code_poetry/formatter'
   require 'code_poetry-html'
   require 'code_poetry/cli'
 

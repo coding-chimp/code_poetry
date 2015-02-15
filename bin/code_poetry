@@ -1,4 +1,7 @@
 #!/usr/bin/env ruby
+require "code_poetry/formatter/cl_formatter"
 require "code_poetry/cli"
 
-CodePoetry::CLI.execute(ARGV[0], nil)
+formatter = CodePoetry::Formatter::CLFormatter.new
+
+CodePoetry::CLI.execute(ARGV[0], formatter)
