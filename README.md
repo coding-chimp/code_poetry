@@ -23,6 +23,10 @@ And then execute:
 
     $ bundle
 
+Or install it yourself:
+
+    $ gem install code-poetry
+
 ## Usage
 
 Excecute from your application root:
@@ -30,6 +34,17 @@ Excecute from your application root:
     $ rake metrics
 
 This will generate a HTML report to ```metrics/index.html```.
+
+Or if you installed the gem globally use:
+
+    $ code_poetry
+
+This will display your smells in the command line.
+
+You can also give a path to a file or subdirectory if you only want metrics for
+those files:
+
+    $ code_poetry app/models
 
 ## Contributing
 
