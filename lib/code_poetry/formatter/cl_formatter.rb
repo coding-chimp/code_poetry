@@ -10,8 +10,7 @@ module CodePoetry
       private
 
       def print_smells_for(stat)
-        # TODO: Print out duplication smells
-        smells = stat.smells.reject { |smell| smell.type == "duplication" }
+        smells = stat.smells
         return if smells.empty?
 
         puts stat.name
@@ -28,23 +27,35 @@ module CodePoetry
       end
 
       def print_duplication(stat, smell)
+        duplication = smell.object
+
+        puts <<-MESSAGE.gsub(/^ {8}/, '').gsub(/\n  /, ' ')
+          #{duplication.severity} Code found in #{duplication.node} nodes
+          (mass  = #{duplication.mass})
+        MESSAGE
+
+        duplication.methods.each do |method|
+          puts "    #{method.pretty_location}"
+        end
       end
 
       def print_complex_method(_, smell)
         method = smell.object
-        complexity = "(complexity = #{method.complexity})"
 
-        puts "  Complex Method: #{method.pretty_name} #{complexity}"
+        puts <<-MESSAGE.gsub(/^ {8}/, '').gsub(/\n  /, ' ')
+          Complex Method #{method.pretty_name} #{method.complexity}
+          (complexity = #{method.complexity})
+        MESSAGE
       end
 
       def print_complex_class(stat, _)
-        puts "  Complext Class (complexity = #{stat.complexity})"
+        puts "  Complex Class (complexity = #{stat.complexity})"
       end
 
       def print_complex_class_definition(stat, _)
-        complexity = "(complexity = #{stat.definition_complexity})"
-
-        puts "  Complex Class Definition #{complexity}"
+        puts <<-MESSAGE.gsub(/^ {8}/, '')
+          Complex Class Definition (complexity = #{stat.definition_complexity})
+        MESSAGE
       end
     end
   end
