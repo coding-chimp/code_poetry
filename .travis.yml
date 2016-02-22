@@ -4,12 +4,15 @@ rvm:
   - 2.0.0
   - 2.1.0
   - 2.2.0
+  - 2.3.0
+before_install:
+  - gem install bundler
 addons:
   code_climate:
     repo_token:
-      secure: "JJb9iyhNuNNUpnjGMWjNNIjaPOST53+vAzb6RHdzNKRC6jKgWZMXZsJ3Tzb6xFe21l+FmdBk+mKWVFHoBvUOlK34++CeXwDek8PhFi6bp7lJASqUabB66o32WPdTYnWy4WV5BesXJyFeKRL2SyFGoOw8B8Cpx+DrOVLR71s5Ovs="
+      secure: JJb9iyhNuNNUpnjGMWjNNIjaPOST53+vAzb6RHdzNKRC6jKgWZMXZsJ3Tzb6xFe21l+FmdBk+mKWVFHoBvUOlK34++CeXwDek8PhFi6bp7lJASqUabB66o32WPdTYnWy4WV5BesXJyFeKRL2SyFGoOw8B8Cpx+DrOVLR71s5Ovs=
 notifications:
   email: false
   slack:
     rooms:
-      secure: "bXtxfw97KhPDFNiS402PghKK2fvcfF4diZUWPaJu2VhRzBabveD+j4F4XQW7glRXcGzypOuCYqyTqHFXjjItO52+PEz4gUwak42UnFjHcGQ3//OeQB9bqCkR7IgyjILfWOS57JJE9XHa34p+cWnYntQ/u10rTiyivC1vfmjiufs="
+      secure: KITFC3pJmWxPcNWNAJlAlLe93F1zy0slQHvnEUSNSwsWAcGSaRFr/2h1H/BzWalkUUtctg6iFX05NnOsGfW2LyVvg+W5006xcIaxv0OzIWHIVdtvvE7H1UzGnem0+eMHI/04oAoItO2Pskt7rq7LyyIhY9OHCZU0XfdJ3qH1440=
